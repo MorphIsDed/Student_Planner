@@ -30,6 +30,13 @@ class MainActivity : ComponentActivity() {
                 isLoading = false
             }
 
+            if (isExiting) {
+                LaunchedEffect(Unit) {
+                    delay(2000) // 2-second delay before closing
+                    finish()
+                }
+            }
+
             StudentPlannerTheme(darkTheme = darkTheme) {
                 if (isLoading) {
                     SplashScreen()
