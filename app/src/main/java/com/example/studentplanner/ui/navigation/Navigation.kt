@@ -24,7 +24,12 @@ import com.example.studentplanner.ui.view.TaskDetailScreen
 import com.example.studentplanner.ui.view.TasksScreen
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(
+    darkTheme: Boolean,
+    onThemeChange: (Boolean) -> Unit,
+    notificationsEnabled: Boolean,
+    onNotificationsChange: (Boolean) -> Unit
+) {
     val navController = rememberNavController()
     val items = listOf(
         BottomNavItem.Home,
@@ -65,7 +70,14 @@ fun AppNavigation() {
             composable(BottomNavItem.Home.route) { HomeScreen(onTaskClick = { taskName -> navController.navigate("task_detail/$taskName") }) }
             composable(BottomNavItem.Tasks.route) { TasksScreen(onTaskClick = { taskName -> navController.navigate("task_detail/$taskName") }) }
             composable(BottomNavItem.Planner.route) { PlannerScreen() }
-            composable(BottomNavItem.Settings.route) { SettingsScreen() }
+            composable(BottomNavItem.Settings.route) {
+                SettingsScreen(
+                    darkTheme = darkTheme,
+                    onThemeChange = onThemeChange,
+                    notificationsEnabled = notificationsEnabled,
+                    onNotificationsChange = onNotificationsChange
+                )
+            }
             composable(
                 "task_detail/{taskName}",
                 arguments = listOf(navArgument("taskName") { type = NavType.StringType })

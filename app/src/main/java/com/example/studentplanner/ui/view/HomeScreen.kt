@@ -4,8 +4,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,17 +23,32 @@ import com.example.studentplanner.models.SampleData
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun TasksScreen(onTaskClick: (String) -> Unit = {}) {
+fun HomeScreen(onTaskClick: (String) -> Unit = {}) {
     val tasks = SampleData.tasks
     Column(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
-        Text(text = "All Tasks", style = MaterialTheme.typography.titleLarge)
-        LazyColumn(
-            modifier = Modifier.padding(top = 16.dp)
+        Text("Today's Overview", style = MaterialTheme.typography.titleLarge)
+        Spacer(Modifier.height(8.dp))
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+            ) {
+                Text("Next Class: Physics", style = MaterialTheme.typography.titleMedium)
+                Text("Time: 10:00 AM - 11:00 AM")
+            }
+        }
+
+        Spacer(Modifier.height(16.dp))
+        Text("Pending Tasks", style = MaterialTheme.typography.titleLarge)
+        Spacer(Modifier.height(8.dp))
+        LazyColumn {
             items(tasks) { task ->
                 Card(
                     modifier =
@@ -59,6 +76,6 @@ fun TasksScreen(onTaskClick: (String) -> Unit = {}) {
 
 @Preview(showBackground = true)
 @Composable
-fun TasksScreenPreview() {
-    TasksScreen()
+fun HomeScreenPreview() {
+    HomeScreen()
 }
