@@ -11,12 +11,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.studentplanner.ui.view.HomeScreen
 import com.example.studentplanner.ui.view.PlannerScreen
+import com.example.studentplanner.ui.view.SettingsScreen
+import com.example.studentplanner.ui.view.TaskDetailScreen
 import com.example.studentplanner.ui.view.TasksScreen
 
 @Composable
@@ -26,6 +30,7 @@ fun AppNavigation() {
         BottomNavItem.Home,
         BottomNavItem.Tasks,
         BottomNavItem.Planner,
+        BottomNavItem.Settings
     )
 
     Scaffold(
@@ -40,7 +45,6 @@ fun AppNavigation() {
                         selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                         onClick = {
                             navController.navigate(screen.route) {
-                                // popUpTo requires the navigation runtime extension (comes from nav graph)
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
                                 }
@@ -58,9 +62,16 @@ fun AppNavigation() {
             startDestination = BottomNavItem.Home.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(BottomNavItem.Home.route) { HomeScreen() }
-            composable(BottomNavItem.Tasks.route) { TasksScreen() }
+            composable(BottomNavItem.Home.route) { HomeScreen(onTaskClick = { taskName -> navController.navigate("task_detail/$taskName") }) }
+            composable(BottomNavItem.Tasks.route) { TasksScreen(onTaskClick = { taskName -> navController.navigate("task_detail/$taskName") }) }
             composable(BottomNavItem.Planner.route) { PlannerScreen() }
+            composable(BottomNavItem.Settings.route) { SettingsScreen() }
+            composable(
+                "task_detail/{taskName}",
+                arguments = listOf(navArgument("taskName") { type = NavType.StringType })
+            ) {
+                TaskDetailScreen(taskName = it.arguments?.getString("taskName"))
+            }
         }
     }
 }
