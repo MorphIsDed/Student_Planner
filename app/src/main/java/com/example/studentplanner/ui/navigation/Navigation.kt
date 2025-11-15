@@ -1,5 +1,7 @@
 package com.example.studentplanner.ui.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -66,7 +68,9 @@ fun AppNavigation(
         NavHost(
             navController = navController,
             startDestination = BottomNavItem.Home.route,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
+            enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700)) }
         ) {
             composable(BottomNavItem.Home.route) { HomeScreen(onTaskClick = { taskName -> navController.navigate("task_detail/$taskName") }) }
             composable(BottomNavItem.Tasks.route) { TasksScreen(onTaskClick = { taskName -> navController.navigate("task_detail/$taskName") }) }
