@@ -28,7 +28,8 @@ fun AppNavigation(
     darkTheme: Boolean,
     onThemeChange: (Boolean) -> Unit,
     notificationsEnabled: Boolean,
-    onNotificationsChange: (Boolean) -> Unit
+    onNotificationsChange: (Boolean) -> Unit,
+    onExitApp: () -> Unit
 ) {
     val navController = rememberNavController()
     val items = listOf(
@@ -75,7 +76,8 @@ fun AppNavigation(
                     darkTheme = darkTheme,
                     onThemeChange = onThemeChange,
                     notificationsEnabled = notificationsEnabled,
-                    onNotificationsChange = onNotificationsChange
+                    onNotificationsChange = onNotificationsChange,
+                    onExitApp = onExitApp
                 )
             }
             composable(

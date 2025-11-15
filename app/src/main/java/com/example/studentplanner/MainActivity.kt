@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.example.studentplanner.ui.navigation.AppNavigation
 import com.example.studentplanner.ui.theme.StudentPlannerTheme
+import com.example.studentplanner.ui.view.ClosingScreen
 import com.example.studentplanner.ui.view.SplashScreen
 import kotlinx.coroutines.delay
 
@@ -20,6 +21,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             var isLoading by remember { mutableStateOf(true) }
+            var isExiting by remember { mutableStateOf(false) }
             var darkTheme by remember { mutableStateOf(false) }
             var notificationsEnabled by remember { mutableStateOf(true) }
 
@@ -31,12 +33,15 @@ class MainActivity : ComponentActivity() {
             StudentPlannerTheme(darkTheme = darkTheme) {
                 if (isLoading) {
                     SplashScreen()
+                } else if (isExiting) {
+                    ClosingScreen()
                 } else {
                     AppNavigation(
                         darkTheme = darkTheme,
                         onThemeChange = { darkTheme = it },
                         notificationsEnabled = notificationsEnabled,
-                        onNotificationsChange = { notificationsEnabled = it }
+                        onNotificationsChange = { notificationsEnabled = it },
+                        onExitApp = { isExiting = true }
                     )
                 }
             }
